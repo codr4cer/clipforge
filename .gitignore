@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+
+downloads/
+transcripts/
+clips/
+exports/
+metadata/
+
+.DS_Store
+.env
