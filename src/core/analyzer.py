@@ -1,6 +1,8 @@
+import json
 from pathlib import Path
 
 from src.config.settings import PROJECT_DIR
+from src.ai.mock_provider import MockAIProvider
 
 
 PROMPT_PATH = PROJECT_DIR / "src" / "prompts" / "analyzer_prompt.txt"
@@ -18,10 +20,7 @@ Transcript to analyze:
 {transcript}
 """
 
-    print("\n🤖 Prompt Viral Engine généré.")
-    print(f"Longueur du prompt : {len(final_prompt)} caractères")
+    provider = MockAIProvider()
+    response = provider.generate(final_prompt)
 
-    return {
-        "status": "prompt_generated",
-        "prompt_preview": final_prompt[:3000],
-    }
+    return json.loads(response)
