@@ -2,7 +2,8 @@ import json
 from pathlib import Path
 
 from src.config.settings import PROJECT_DIR
-from src.ai.mock_provider import MockAIProvider
+from src.ai.factory import get_ai_provider
+from src.models.validators import validate_clip_suggestions
 
 
 PROMPT_PATH = PROJECT_DIR / "src" / "prompts" / "analyzer_prompt.txt"
@@ -20,7 +21,11 @@ Transcript to analyze:
 {transcript}
 """
 
-    provider = MockAIProvider()
+    provider = get_ai_provider()
     response = provider.generate(final_prompt)
 
-    return json.loads(response)
+    data = json.loads(response)
+
+    validate_clip_suggestions(data)
+
+    return data
