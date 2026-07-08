@@ -1,3 +1,5 @@
+import json
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -10,7 +12,7 @@ class OpenAIProvider(AIProvider):
     def __init__(self):
         self.client = OpenAI()
 
-    def generate(self, prompt: str) -> str:
+    def generate(self, prompt: str) -> dict:
         response = self.client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=[
@@ -20,6 +22,9 @@ class OpenAIProvider(AIProvider):
                 }
             ],
             temperature=0.2,
+            response_format={"type": "json_object"},
         )
 
-        return response.choices[0].message.content
+        content = response.choices[0].message.content
+
+        return json.loads(content)
