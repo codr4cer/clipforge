@@ -4,6 +4,7 @@ from pathlib import Path
 from src.config.settings import PROJECT_DIR
 from src.ai.factory import get_ai_provider
 from src.models.validators import validate_clip_suggestions
+from src.core.transcript_chunker import chunk_transcript
 
 
 PROMPT_PATH = PROJECT_DIR / "src" / "prompts" / "analyzer_prompt.txt"
@@ -13,12 +14,18 @@ def analyze_transcript(transcript_path: Path):
     transcript = transcript_path.read_text(encoding="utf-8")
     system_prompt = PROMPT_PATH.read_text(encoding="utf-8")
 
-    final_prompt = f"""
+chunks = chunk_transcript(transcript)
+
+print(f"\n🧩 Nombre de chunks générés : {len(chunks)}")
+
+first_chunk = chunks[0]
+
+final_prompt = f"""
 {system_prompt}
 
-Transcript to analyze:
+Transcript chunk to analyze:
 
-{transcript}
+{first_chunk}
 """
 
     provider = get_ai_provider()
