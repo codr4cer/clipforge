@@ -18,21 +18,31 @@ chunks = chunk_transcript(transcript)
 
 print(f"\n🧩 Nombre de chunks générés : {len(chunks)}")
 
-first_chunk = chunks[0]
+provider = get_ai_provider()
+all_clips = []
 
-final_prompt = f"""
+for index, chunk in enumerate(chunks, start=1):
+    print(f"\n🤖 Analyse du chunk {index}/{len(chunks)}...")
+
+    final_prompt = f"""
 {system_prompt}
+
+Transcript chunk number: {index}
 
 Transcript chunk to analyze:
 
-{first_chunk}
+{chunk}
 """
 
-    provider = get_ai_provider()
     response = provider.generate(final_prompt)
-
     data = json.loads(response)
 
     validate_clip_suggestions(data)
 
-    return data
+    all_clips.extend(data["clips"])
+
+all_clips = sorted(all_clips, key=lambda clip: clip["score"], reverse=True)
+
+return {
+    "clips": all_clips[:10]
+}
