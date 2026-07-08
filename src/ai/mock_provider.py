@@ -1,11 +1,9 @@
-import json
-
 from src.ai.base import AIProvider
 
 
 class MockAIProvider(AIProvider):
-    def generate(self, prompt: str) -> str:
-        fake_response = {
+    def generate(self, prompt: str) -> dict:
+        return {
             "clips": [
                 {
                     "id": 1,
@@ -16,9 +14,7 @@ class MockAIProvider(AIProvider):
                     "hook": "Ce passage pourrait créer de la curiosité.",
                     "reason": "Réponse simulée pour tester le pipeline.",
                     "title": "Extrait automobile prometteur",
-                    "hashtags": ["automobile", "voiture", "mecanique", "cartok"]
+                    "hashtags": ["automobile", "voiture", "mecanique", "cartok"],
                 }
             ]
         }
-
-        return json.dumps(fake_response, ensure_ascii=False, indent=2)

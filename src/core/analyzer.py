@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 from src.config.settings import PROJECT_DIR
@@ -34,8 +33,7 @@ Transcript chunk to analyze:
 {chunk}
 """
 
-    response = provider.generate(final_prompt)
-    data = json.loads(response)
+    data = provider.generate(final_prompt)
 
     validate_clip_suggestions(data)
 
